@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1>Books</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <h5>Book name, author name, year of publication</h5>
+        </div>
+        <div class="col-sm-4">
+            <a href="books/new"><h5>Add new book</h5></a>
+        </div>
+    </div>
+
+    <div class="row" th:each="book : ${books}">
+        <div class="col-sm-5">
+            <a th:href="@{books/{id}(id=${book.getId()})}" th:text="${book.getBookName()} + ', ' + ${book.getAuthorName()} + ', ' + ${book.getPublicationYear()}">Book name</a>
+        </div>
+        <div class="col-sm-1">
+            <a th:href="@{books/edit/{id}(id=${book.getId()})}">Edit</a>
+        </div>
+        <div class="col-sm-6 ">
+            <form th:method="DELETE" th:action="@{books/{id}(id=${book.getId()})}">
+                <input class="btn btn-danger" type="submit" value="delete">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

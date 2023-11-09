@@ -1,0 +1,50 @@
+<!DOCTYPE    html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1>Books</h1>
+</div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-2 bg-info">Book name</div>
+        <div class="col-lg-10" th:text="${book.getBookName()}">Book name</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 bg-info">Author name</div>
+        <div class="col-lg-10" th:text="${book.getAuthorName()}">Author name</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 bg-info">Publication year</div>
+        <div class="col-lg-10" th:text="${book.getPublicationYear()}">Publication year</div>
+    </div>
+
+    <div th:switch="${book.getBookOwner()}">
+        <div th:case="null">
+            Book has no owner.
+        </div>
+
+        <div class="row" th:case="*">
+            <div class="col">
+                Book owner is <p th:text="${book.getBookOwner().getName()}">Book owner name </p>
+            </div>
+            <div class="col">
+                <form th:method="PATCH" th:action="@{{id}(id=${book.getId()})}">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

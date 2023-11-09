@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>People</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1>People</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <h5>Name</h5>
+        </div>
+        <div class="col-sm-4">
+            <a href="people/new"><h5>Add new person</h5></a>
+        </div>
+    </div>
+
+    <div class="row" th:each="person : ${people}">
+        <div class="col-sm-1">
+            <a th:href="@{people/{id}(id=${person.getId()})}" th:text="${person.getName()}">Name</a>
+        </div>
+        <div class="col-sm-1">
+            <a th:href="@{people/edit/{id}(id=${person.getId()})}">Edit</a>
+        </div>
+        <div class="col-sm-10 ">
+            <form th:method="DELETE" th:action="@{people/{id}(id=${person.getId()})}">
+                <input class="btn btn-danger" type="submit" value="delete">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
