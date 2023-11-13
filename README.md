@@ -19,4 +19,4 @@ This project, named "library," is developed for educational purposes and is main
 
 ## Demo
 
-![Uploading 2023-11-13 22-38-25.gif…]()
+![2023-11-13 22-38-25](https://github.com/Buraska/LibraryApp/assets/73584781/402eb19e-44be-43ba-b396-25947c085ac9)
