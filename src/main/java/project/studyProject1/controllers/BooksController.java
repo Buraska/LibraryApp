@@ -2,12 +2,12 @@ package project.studyProject1.controllers;
 
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import project.studyProject1.dao.BooksDao;
+import project.studyProject1.dao.PersonDao;
 import project.studyProject1.models.Book;
 
 @Controller
@@ -15,9 +15,11 @@ import project.studyProject1.models.Book;
 public class BooksController {
 
     private BooksDao dao;
+    private PersonDao personDao;
 
-    public BooksController(@Autowired BooksDao dao) {
+    public BooksController(BooksDao dao, PersonDao personDao) {
         this.dao = dao;
+        this.personDao = personDao;
     }
 
     @GetMapping()
@@ -33,8 +35,10 @@ public class BooksController {
             throw new RuntimeException("Book controller.show() exception. No such book");
         }
 
-
+        Long ownerId = 0L;
+        model.addAttribute("people", personDao.showAll());
         model.addAttribute("book", book.get());
+        model.addAttribute("ownerId", ownerId);
         return "/books/show";
     }
 
@@ -70,13 +74,19 @@ public class BooksController {
 
     @PatchMapping("/{id}")
     public String patchBook(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult){
-
         if (bindingResult.hasErrors()){
             return "/books/edit";
         }
         dao.update(book);
         return "redirect:/books";
     }
+
+    @PatchMapping("/{id}/updateOwner")
+    public String updateOwner(@PathVariable("id") Long id, @ModelAttribute("book") Book book){
+        dao.updateOwner(id, book.getBookOwnerId());
+        return "redirect:/books/"+id;
+    }
+
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") long id){

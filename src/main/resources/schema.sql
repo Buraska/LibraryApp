@@ -15,7 +15,7 @@ create table Book(
    book_name varchar(255) not null unique,
    author_name varchar(255) not null,
    publication_year integer not null,
-   person_id bigint references Person(id) on delete cascade
+   person_id bigint references Person(id) on delete set null
 );
 
 insert into Person(name, birth_year) VALUES ('Vadim', 2001);

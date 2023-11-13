@@ -1,17 +1,6 @@
-<!DOCTYPE    html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Books</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
+
 <body>
-<div class="jumbotron text-center">
-    <h1>Books</h1>
-</div>
+<div th:replace="~{header :: header('Books')}"></div>
 
 <div class="container">
 
@@ -31,15 +20,24 @@
     <div th:switch="${book.getBookOwner()}">
         <div th:case="null">
             Book has no owner.
+
+            <form th:method="PATCH" th:action="@{/books/{id}/updateOwner(id = ${book.getId()})}">
+
+                <select th:field="${book.bookOwnerId}" class="form-select" aria-label="Default select example">
+                    <option th:each="person : ${people}" th:text="${person.getName()}"  th:value="${person.getId()}" class="dropdown-item">Action</option>
+                </select>
+                <input type="submit" value="Assign the owner">
+            </form>
         </div>
 
         <div class="row" th:case="*">
             <div class="col">
-                Book owner is <p th:text="${book.getBookOwner().getName()}">Book owner name </p>
+                Book owner: <span th:text="${book.getBookOwner().getName()}">Book owner name </span>
             </div>
             <div class="col">
-                <form th:method="PATCH" th:action="@{{id}(id=${book.getId()})}">
-
+                <form th:method="PATCH" th:action="@{/books/{id}/updateOwner(id=${book.getId()})}" th:object="${book}">
+                    <input type="hidden" th:value="${null}" th:field="*{bookOwnerId}">
+                    <input type="submit" value="Free book">
                 </form>
             </div>
         </div>

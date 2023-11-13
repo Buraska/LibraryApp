@@ -1,7 +1,6 @@
 package project.studyProject1.dao;
 
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -31,8 +30,15 @@ public class BooksDao extends BasicDao<Book>{
 
     @Override
     public void update(Book book) {
-        var sql = "update BOOK set BOOK_NAME = ?, AUTHOR_NAME = ?, PUBLICATION_YEAR = ? where id = ?";
-        template.update(sql, book.getBookName(), book.getAuthorName(), book.getPublicationYear(), book.getId());
+
+        var sql = "update BOOK set BOOK_NAME = ?, AUTHOR_NAME = ?, PUBLICATION_YEAR = ?, PERSON_ID = ? where id = ?";
+        template.update(sql, book.getBookName(), book.getAuthorName(), book.getPublicationYear(), book.getBookOwnerId(), book.getId());
+    }
+
+    public void updateOwner(Long bookId, Long bookOwnerId){
+
+        var sql = "update BOOK set PERSON_ID = ? where id = ?";
+        template.update(sql, bookOwnerId, bookId);
     }
 
     @Override

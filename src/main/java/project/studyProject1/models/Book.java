@@ -11,6 +11,7 @@ import project.studyProject1.dao.PersonDao;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Book extends BasicEntity {
 
     @NonNull
@@ -29,6 +30,7 @@ public class Book extends BasicEntity {
     @Max(value = 2023, message = "Year should be between 2000 and 2023")
     private Integer publicationYear;
 
+    private Long bookOwnerId;
     private Person bookOwner;
 
 
