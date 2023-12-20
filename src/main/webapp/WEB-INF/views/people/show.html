@@ -1,15 +1,45 @@
 <body>
 <div th:replace="~{header :: header('People')}"></div>
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Birth year</th>
-    </tr>
-    <tr>
-        <th th:text="${person.getName()}">Name</th>
-        <th th:text="${person.getBirthYear()}">Birth year</th>
-    </tr>
-</table>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>
+                Name: <span th:text="${person.getName()}">Name</span>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>
+                Birth year: <span th:text="${person.getBirthYear()}">Year</span>
+            </h5>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Book name</th>
+            <th>Book author</th>
+            <th>Year of publication</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${person.getBooks()}">
+            <td th:text="${book.getBookName()}">Name</td>
+            <td th:text="${book.getAuthorName()}">Author</td>
+            <td th:text="${book.getPublicationYear()}">Publication year</td>
+            <td><a th:href="@{~/books/{id}(id = ${book.getId()})}">View</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
 </body>
 </html>

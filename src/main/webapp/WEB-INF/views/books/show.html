@@ -2,41 +2,37 @@
 <body>
 <div th:replace="~{header :: header('Books')}"></div>
 
-<div class="container">
+<div style="" class="container">
 
     <div class="row">
-        <div class="col-lg-2 bg-info">Book name</div>
-        <div class="col-lg-10" th:text="${book.getBookName()}">Book name</div>
+        <div>Book name: <em th:text="${book.getBookName()}">Book name></em></div>
     </div>
     <div class="row">
-        <div class="col-lg-2 bg-info">Author name</div>
-        <div class="col-lg-10" th:text="${book.getAuthorName()}">Author name</div>
+        <div>Author name: <em th:text="${book.getAuthorName()}">Author name></em></div>
     </div>
     <div class="row">
-        <div class="col-lg-2 bg-info">Publication year</div>
-        <div class="col-lg-10" th:text="${book.getPublicationYear()}">Publication year</div>
+        <div>Publication year: <em th:text="${book.getPublicationYear()}">Publication year></em></div>
     </div>
 
-    <div th:switch="${book.getBookOwner()}">
+    <div th:switch="${book.getOwner()}">
         <div th:case="null">
             Book has no owner.
 
-            <form th:method="PATCH" th:action="@{/books/{id}/updateOwner(id = ${book.getId()})}">
+            <form th:object="${owner}" th:method="PATCH" th:action="@{/books/{id}/updateOwner(id = ${book.getId()})}">
 
-                <select th:field="${book.bookOwnerId}" class="form-select" aria-label="Default select example">
-                    <option th:each="person : ${people}" th:text="${person.getName()}"  th:value="${person.getId()}" class="dropdown-item">Action</option>
+                <select th:field="${owner.id}" class="form-select" aria-label="Default select example">
+                    <option th:each="person : ${people}" th:text="${person.getName()}"  th:value="${person.id}" class="dropdown-item">Action</option>
                 </select>
                 <input type="submit" value="Assign the owner">
             </form>
         </div>
 
-        <div class="row" th:case="*">
-            <div class="col">
-                Book owner: <span th:text="${book.getBookOwner().getName()}">Book owner name </span>
+        <div th:case="*">
+            <div class="row">
+                <div class="col-lg-12">Book owner: <em th:text="${book.getOwner().getName()}">Book owner name </em></div>
             </div>
-            <div class="col">
-                <form th:method="PATCH" th:action="@{/books/{id}/updateOwner(id=${book.getId()})}" th:object="${book}">
-                    <input type="hidden" th:value="${null}" th:field="*{bookOwnerId}">
+            <div class="row">
+                <form th:method="PATCH" th:action="@{/books/{id}/removeOwner(id=${book.getId()})}">
                     <input type="submit" value="Free book">
                 </form>
             </div>

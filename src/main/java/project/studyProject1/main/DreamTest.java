@@ -15,11 +15,10 @@ public class DreamTest {
     public static void main(String[] args) {
         var dao =  new AnnotationConfigApplicationContext(SpringConfig.class).getBean(PersonDao.class);
 
-        var person = new Person("Name", 12);
 
-        System.out.println(dao.save(person));
         System.out.println(dao.showAll());
-        System.out.println(dao.show(person.getId()));
+        System.out.println(dao.show("John Doe"));
+        System.out.println(dao.show("John Doe").get().getBooks());
     }
 
 

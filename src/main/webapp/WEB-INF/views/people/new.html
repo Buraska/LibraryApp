@@ -1,22 +1,24 @@
 <body>
 <div th:replace="~{header :: header('People')}"></div>
 
-<form method="POST" th:action="@{/people}" th:object="${person}">
+<div class="container">
+    <form method="POST" th:action="@{/people}" th:object="${person}">
 
-    <div class="form-group">
-    <div class="bg-danger"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
-    <label  for="name">Name</label>
-    <input type="text" th:field="*{name}" id="name">
-    </div>
+        <div class="form-group">
+            <div class="bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
+            <label for="name">Name</label>
+            <input type="text" th:field="*{name}" id="name">
+        </div>
 
-    <div class="form-group">
-    <div class="bg-danger" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">birth year error</div>
-    <label for="birthYear">Birth year</label>
-    <input type="number" th:field="*{birthYear}" id="birthYear">
-    </div>
+        <div class="form-group">
+            <div class="bg-danger" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">birth year error
+            </div>
+            <label for="birthYear">Birth year</label>
+            <input type="number" th:field="*{birthYear}" id="birthYear">
+        </div>
 
-    <input type="submit" class="btn btn-primary" value="Create">
-</form>
+        <input type="submit" class="btn btn-primary" value="Create">
+    </form>
 </div>
 </body>
 </html>

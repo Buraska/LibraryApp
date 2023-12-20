@@ -12,6 +12,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,16 +24,43 @@ import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(value = {"project.studyProject1.dao", "project.studyProject1.controllers", "project.studyProject1.util"})
 @PropertySource("classpath:application.properties")
+@EnableTransactionManagement
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
 
     private final Environment environment;
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+
+        return properties;
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(getDataSource());
+        sessionFactory.setPackagesToScan("project.studyProject1.models");
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        return sessionFactory;
+    }
+
+    @Bean
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+
+        return transactionManager;
+    }
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext, Environment environment) {

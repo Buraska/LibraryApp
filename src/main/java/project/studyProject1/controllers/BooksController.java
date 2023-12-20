@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import project.studyProject1.dao.BooksDao;
 import project.studyProject1.dao.PersonDao;
 import project.studyProject1.models.Book;
+import project.studyProject1.models.Person;
 
 @Controller
 @RequestMapping("books")
@@ -37,8 +38,8 @@ public class BooksController {
 
         Long ownerId = 0L;
         model.addAttribute("people", personDao.showAll());
+        model.addAttribute("owner", new Person());
         model.addAttribute("book", book.get());
-        model.addAttribute("ownerId", ownerId);
         return "/books/show";
     }
 
@@ -82,10 +83,17 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}/updateOwner")
-    public String updateOwner(@PathVariable("id") Long id, @ModelAttribute("book") Book book){
-        dao.updateOwner(id, book.getBookOwnerId());
+    public String updateOwner(@PathVariable("id") Long id, @ModelAttribute("owner") Person owner){
+        System.out.println("OWNER ID: " + owner.getId());
+        dao.updateOwner(id, owner);
         return "redirect:/books/"+id;
     }
+    @PatchMapping("/{id}/removeOwner")
+    public String removeOwner(@PathVariable("id") Long id){
+        dao.updateOwner(id, null);
+        return "redirect:/books/"+id;
+    }
+
 
 
     @DeleteMapping("/{id}")

@@ -1,8 +1,8 @@
 package project.studyProject1.models;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 public class BasicEntity{
-    protected Long id;
+
 }

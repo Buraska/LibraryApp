@@ -1,58 +1,54 @@
 package project.studyProject1.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 import project.studyProject1.models.BasicEntity;
+
 import java.util.*;
 
-public abstract class BasicDao<T extends BasicEntity> {
+public abstract class BasicDao<T>{
+    protected SessionFactory sessionFactory;
 
-
-
-    protected JdbcTemplate template;
-
-    public BasicDao(@Autowired JdbcTemplate jdbcTemplate) {
-        this.template = jdbcTemplate;
+    public BasicDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
 
     protected abstract Class<T> getClazz();
     protected abstract String getTableName();
+
+    @Transactional
     public T save(T obj) {
-        var data = new BeanPropertySqlParameterSource(obj);
-
-        Number key = new SimpleJdbcInsert(template)
-                .withTableName(getTableName())
-                .usingGeneratedKeyColumns("id")
-                .executeAndReturnKey(data);
-        obj.setId(key.longValue());
-
+        var session = sessionFactory.getCurrentSession();
+        session.persist(obj);
         return obj;
     }
 
+    @Transactional(readOnly = true)
     public Optional<T> show(Long id) {
-        var sql = "select * from " + getTableName() + " where id = ?";
-        return template.query(sql, new Object[]{id}, new BeanPropertyRowMapper<>(getClazz())).stream().findAny();
+        var session = sessionFactory.getCurrentSession();
+        return Optional.ofNullable(session.get(getClazz(), id));
     }
 
-
+    @Transactional
     public List<T> showAll() {
-        var sql = "select * from " + getTableName();
-        return template.query(sql, new BeanPropertyRowMapper<>(getClazz()));
+        var session = sessionFactory.getCurrentSession();
+        String sql = "select p from %s p".formatted(getTableName());
 
+        return session.createQuery(sql ,getClazz()).getResultList();
     }
 
 
+    @Transactional
     public void delete(Long id) {
-        var sql = "delete from " + getTableName() + " where id = ?";
-        template.update(sql, id);
+        var session = sessionFactory.getCurrentSession();
+        session.remove(session.get(getClazz(), id));
     }
 
+    @Transactional
     public void update(T obj) {
-        throw new RuntimeException("Not implemented");
+        var session = sessionFactory.getCurrentSession();
+        session.merge(obj);
     }
 
 
