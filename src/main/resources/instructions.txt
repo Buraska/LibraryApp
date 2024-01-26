@@ -1,0 +1,10 @@
++ user can only watch books list and own information. +
++ user take book, it has limit in three books.
++ user have page with own books. It is written if book is expired.
+4. user can edit own info. User can delete own account.
+
++ admin can do all possible editing and deleting.
++ admin can free book from user.
++ admin can see all info.
+
+error pages

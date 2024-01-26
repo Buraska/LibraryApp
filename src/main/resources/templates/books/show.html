@@ -1,0 +1,69 @@
+
+<body>
+
+<div th:replace="~{header :: header('Books')}"></div>
+
+<div style="" class="container">
+
+    <div class="row">
+        <div>Book name: <em th:text="${book.getBookName()}">Book name></em></div>
+    </div>
+    <div class="row">
+        <div>Author name: <em th:text="${book.getAuthorName()}">Author name></em></div>
+    </div>
+    <div class="row">
+        <div>Publication date: <em th:text="${#dates.format(book.getPublicationDate(), 'dd/MM/yyyy')}">Publication
+            date></em></div>
+    </div>
+
+    <div th:switch="${book.hasOwner()}">
+        <div th:case="false">
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            Book has no owner.
+
+            <form th:method="PATCH" th:action="@{/books/{id}/updateOwner(id = ${book.getId()})}">
+
+                <select   th:name="id"  class="form-select" aria-label="Default select example">
+                    <option th:each="person : ${people}" th:text="${person.getName()}"th:value="${person.id}"
+                            class="dropdown-item">Action
+                    </option>
+                </select>
+                <input type="submit" value="Assign the owner">
+            </form>
+            </th:block>
+            <th:block sec:authorize="hasRole('ROLE_USER')">
+                This book is free
+                <th:block th:if="${canTakeMore}">
+                <form th:method="PATCH" th:action="@{/books/{id}/assign_to_current_user(id = ${book.getId()})}">
+                    <input type="submit" value="Take the book">
+                </form>
+                </th:block>
+                <th:block th:unless="${canTakeMore}">
+                    <div><p class="font-weight-bold">You have reached book limit! </p></div>
+                </th:block>
+
+            </th:block>
+        </div>
+
+        <div th:case="*">
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <div class="row">
+                    <div class="col-lg-12">Book owner: <em th:text="${book.getOwner().getName()}">Book owner name </em>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <form th:method="PATCH" th:action="@{/books/{id}/removeOwner(id=${book.getId()})}">
+                        <input type="submit" value="Free book">
+                    </form>
+                </div>
+            </th:block>
+
+        </div>
+    </div>
+
+
+
+</div>
+</body>
+</html>

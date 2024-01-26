@@ -1,0 +1,30 @@
+<body>
+
+<div th:replace="~{header :: header('Registration')}"></div>
+<div class="container">
+    <div class="align-items-center">
+        <form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+            <label for="username">Username: </label>
+            <input type="text" th:field="*{username}" id="username"/>
+            <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+            <br/>
+            <div class="bg-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">birth year error</div>
+            <label for="student-birth-date">Date of birth:</label>
+            <input type="date" th:field="*{dateOfBirth}" id="student-birth-date"/>
+            <br/>
+            <label for="password">Password: </label>
+            <input type="password" th:field="*{password}" id="password"/>
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+            <br/>
+            <div class="form-group">
+                <div class="bg-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
+                <label for="name">Full name</label>
+                <input type="text" th:field="*{name}" id="name">
+            </div>
+            <input type="submit" value="Sign up!"/>
+        </form>
+        <a href="/auth/login" class="link-primary">Already have an account?</a>
+    </div>
+</div>
+</body>
+</html>

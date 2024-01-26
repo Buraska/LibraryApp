@@ -1,0 +1,78 @@
+<body>
+<div th:replace="~{header :: header('Books')}"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <form class="form-inline" action="" method="get">
+                <input class="input-small mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+                       name="query" required/>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="col-sm-4">
+            <a th:href="@{~/books/new}">Add new book</a>
+        </div>
+
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th><a th:href="@{~/books(page_num = ${pageNum}, sort_by = 'bookName')}">Book name</a></th>
+            <th><a th:href="@{~/books(page_num = ${pageNum}, sort_by = 'authorName')}">Author name</a></th>
+            <th><a th:href="@{~/books(page_num = ${pageNum}, sort_by = 'publicationDate')}">Date of publication</a>
+            <th>Has owner</a>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="book : ${books}">
+
+            <td th:text="${book.getBookName()}">
+                Book name
+            </td>
+
+            <td th:text="${book.getAuthorName()}">
+                Book author
+            </td>
+
+            <td th:text="${#dates.format(book.getPublicationDate(), 'dd/MM/yyyy')}">
+                Year
+            </td>
+
+            <td th:style="${book.hasOwner() ? 'color : red;' : 'color: green;'}" th:text="${book.hasOwner()}">
+                Has owner
+            </td>
+
+                <td>
+                    <a th:href="@{~/books/{id}(id=${book.getId()})}">
+                        <input class="btn btn-primary" type="submit" value="View">
+                    </a>
+                </td>
+
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <td>
+                    <a th:href="@{~/books/edit/{id}(id=${book.getId()})}">
+                        <input class="btn btn-secondary" type="submit" value="Edit">
+                    </a>
+                </td>
+
+                <td>
+                    <form th:method="DELETE" th:action="@{~/books/{id}(id=${book.getId()})}">
+                        <input class="btn btn-danger" type="submit" value="delete">
+                    </form>
+                </td>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:replace="~{pagination :: adress ('books')}"></div>
+</div>
+
+</body>

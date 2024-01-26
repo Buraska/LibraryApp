@@ -1,0 +1,42 @@
+<html lang="en">
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+<header th:fragment="adress (adress)">
+
+    <nav  th:if="${pagesTotal != 0}" aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item"  th:if="${searchParams.getPageNum()} != ${1}">
+                <a class="page-link" th:href="@{~/{adress}(page_num = ${searchParams.getPageNum() - 1}, sort_by = ${searchParams.sortBy}, query = ${searchParams.query}, adress = ${adress})}" aria-label="<<">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+
+            <th:block th:each="index: ${#numbers.sequence(1, pagesTotal)}">
+                <li  th:if="${searchParams.getPageNum()} == ${index}" class="page-item active" >
+                    <a class="page-link" th:href="@{~/{adress}(page_num = ${index}, query = ${searchParams.query}, sort_by = ${searchParams.sortBy}, adress = ${adress})}" th:text="${index}">page number</a>
+                </li>
+
+                <li  th:if="${searchParams.getPageNum()} != ${index}" class="page-item" >
+                    <a class="page-link" th:href="@{~/{adress}(page_num = ${index}, sort_by = ${searchParams.sortBy}, query = ${searchParams.query}, adress = ${adress})}" th:text="${index}">page number</a>
+                </li>
+            </th:block>
+
+
+            <li class="page-item" th:if="${searchParams.getPageNum()} != ${pagesTotal}">
+                <a class="page-link" th:href="@{~/{adress}(page_num = ${searchParams.pageNum + 1}, sort_by = ${searchParams.sortBy}, query = ${searchParams.query}, adress = ${adress})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+</body>
+</html>

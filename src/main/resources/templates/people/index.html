@@ -1,0 +1,58 @@
+<div th:replace="~{header :: header('People')}"></div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-4">
+            <a th:href="@{~/people/new}">Add new person</a>
+        </div>
+    </div>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Full name</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="person : ${people}">
+            <td th:text="${person.getName()}">Name</td>
+
+            <td>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a th:href="@{~/people/{id}(id=${person.getId()})}">
+                            <input class="btn btn-primary" type="submit" value="View">
+                        </a>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <a th:href="@{~/people/edit/{id}(id=${person.getId()})}">
+                            <input class="btn btn-secondary" type="submit" value="Edit">
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <form th:method="DELETE" th:action="@{~/people/{id}(id=${person.getId()})}">
+                            <input class="btn btn-danger" type="submit" value="delete">
+                        </form>
+                    </div>
+                </div>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <div th:replace="~{pagination :: adress ('people')}"></div>
+
+</div>
+
+</body>
+</html>
+

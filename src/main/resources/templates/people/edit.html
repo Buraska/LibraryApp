@@ -1,0 +1,27 @@
+
+
+<body>
+
+<div th:replace="~{header :: header('People')}"></div>
+
+<div class="container">
+    <form th:method="PATCH" th:action="@{/people/{id}(id = ${person.getId()})}" th:object="${person}">
+
+        <div class="form-group">
+            <div class="bg-danger"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</div>
+            <label  for="name">Name</label>
+            <input type="text" th:field="*{name}" id="name">
+        </div>
+
+        <div>
+            <div class="bg-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">birth year error</div>
+            <label for="student-birth-date">Date of birth:</label>
+            <input type="date" th:field="*{dateOfBirth}" id="student-birth-date"/>
+        </div>
+        <input type="hidden" name="id" th:value="${person.id}">
+
+        <input type="submit" class="btn btn-primary" value="Edit">
+    </form>
+</div>
+</body>
+</html>

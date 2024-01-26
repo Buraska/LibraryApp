@@ -1,0 +1,72 @@
+<body>
+<div th:replace="~{header :: header('People')}"></div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>
+                Name: <span th:text="${person.getName()}">Name</span>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5>
+                Birth year: <span th:text="${#dates.format(person.getDateOfBirth(), 'dd/MM/yyyy')}">Year</span>
+            </h5>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <table class="table">
+        <h5>Books owned</h5>
+        <thead>
+        <tr>
+            <th>Book name</th>
+            <th>Book author</th>
+            <th>Year of publication</th>
+            <th>Book was taken at</th>
+            <th>Is book expired</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${person.getBooks()}">
+            <td th:text="${book.getBookName()}">Name</td>
+            <td th:text="${book.getAuthorName()}">Author</td>
+            <td th:text="${#dates.format(book.getPublicationDate(), 'dd/MM/yyyy')}">Publication year</td>
+
+            <td th:text="${#dates.format(book.getWasTakenAt(), 'dd/MM/yyyy')}">
+                Was taken at
+            </td>
+
+            <td th:style="${book.isBookExpired() ? 'color:red;' : 'color:green'}" th:text="${book.isBookExpired()}">
+                Year
+            </td>
+
+            <td><a th:href="@{~/books/{id}(id = ${book.getId()})}">View</a></td>
+
+
+
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <a th:href="@{~/people/edit/{id}(id=${person.getId()})}">
+            <input class="btn btn-secondary" type="submit" value="Edit">
+        </a>
+    </div>
+
+    <div>
+        <form th:method="DELETE" th:action="@{~/people/{id}(id=${person.getId()})}">
+            <input class="btn btn-danger" type="submit" value="delete">
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>
