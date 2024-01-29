@@ -1,5 +1,5 @@
 # Library of Lorem Ipsum Street Web App
-*In the heart of code on Lorem Ipsum Street,*
+*In the heart of code on Lorem Ipsum Street,\*
 *A digital library where stories meet.*
 
 Welcome to the *Library of Lorem Ipsum Street* web application – platform for simplified book management. App builed with  Spring ecosystem, including Spring Boot and Spring Security, and enhanced with Thymeleaf and Bootstrap for front-end.
