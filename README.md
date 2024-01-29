@@ -8,5 +8,5 @@ Welcome to the *Library of Lorem Ipsum Street* web application – platform for 
  empower users to have control over their profiles. Administrators, can perform all necessary editing and deleting tasks, including freeing up books from users 
  and accessing detailed information about all users. The API includes pagination and sorting capabilities, and the application is equipped with error handling mechanisms.
 
-##Demo
+## Demo
 ![2024-01-29 16-09-15 (1)](https://github.com/Buraska/LibraryApp/assets/73584781/1657cda7-0859-4392-9260-f94865874ca0)
