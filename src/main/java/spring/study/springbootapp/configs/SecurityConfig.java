@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import spring.study.springbootapp.services.PersonDetailsService;
 
 
@@ -27,8 +28,10 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
+        http.exceptionHandling().accessDeniedPage("/403.html");
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/auth/**").permitAll();
+            auth.requestMatchers( "resources/**", "/", "index.html").permitAll();
             auth.anyRequest().authenticated();})
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
