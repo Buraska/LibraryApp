@@ -130,7 +130,6 @@ public class BooksController {
     public String assignToCurrentUser(@PathVariable("id") Long id){
         var currentPerson = ((PersonalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPerson();
         if (!personService.ifPersonCanHaveMoreBooks(currentPerson.getUsername())){
-            //TODO mingi ERROR
             return "/books/show";
         }
         bookService.updateBookOwner(id, currentPerson.getId());
