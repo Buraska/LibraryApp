@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  hsqldb:
+    image: blacklabelops/hsqldb:latest
+    container_name: hsqldb
+    networks:
+      - back-net
+    environment:
+      - HSQLDB_DATABASE_NAME=hsqldb
+      - HSQLDB_DATABASE_ALIAS=db1
+      - HSQLDB_USER=SA
+      - HSQLDB_PASSWORD=
+    ports:
+      - "9001:9001"
+    volumes:
+      - hsqldb-data:/opt/hsqldb/db
+
+  springapp:
+    build: .
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:hsqldb:hsql://hsqldb:9001/db1
+    restart: no
+    networks:
+      - back-net
+    container_name: springapp
+    ports:
+      - "8080:8080"
+    depends_on:
+      - hsqldb
+
+volumes:
+  hsqldb-data:
+
+networks:
+  back-net: {}

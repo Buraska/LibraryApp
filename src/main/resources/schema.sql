@@ -1,3 +1,5 @@
+SET DATABASE SQL SYNTAX PGS TRUE
+
 drop table if exists person_role;
 drop table if exists Role;
 drop table if exists Book;
