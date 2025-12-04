@@ -16,14 +16,14 @@ services:
     volumes:
       - hsqldb-data:/opt/hsqldb/db
 
-  springappp:
+  springapp:
     build: .
     environment:
       - SPRING_DATASOURCE_URL=jdbc:hsqldb:hsql://hsqldb:9001/db1
     restart: no
     networks:
       - back-net
-    container_name: springappp
+    container_name: springapp
     ports:
       - "8080:8080"
     depends_on:
